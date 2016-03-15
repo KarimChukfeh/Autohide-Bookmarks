@@ -1,15 +1,59 @@
 #define WINVER 0x0500
+#define WM_WINDOWPOSCHANGED
 #include <windows.h>
 #include <unistd.h>
 #include <fstream>
 #include <iostream>
 #include <string>
 
+
 using namespace std;
+
+
+string GetActiveWindowTitle()
+{
+ 
+	char wnd_title[256];
+ 
+	HWND hwnd=GetForegroundWindow(); 
+	GetWindowText(hwnd,wnd_title,sizeof(wnd_title));
+ 
+	return wnd_title;
+}
+
+
+int GetYPos()
+{
+	
+	HWND hwnd=GetForegroundWindow();
+	RECT r1;
+	
+	GetWindowRect(hwnd, &r1);
+	return r1.top;
+}
+
+int GetLeftPos()
+{
+	
+	HWND hwnd=GetForegroundWindow();
+	RECT r1;
+	
+	GetWindowRect(hwnd, &r1);
+	return r1.left;
+}
+
+int GetRightPos()
+{
+	
+	HWND hwnd=GetForegroundWindow();
+	RECT r1;
+	
+	GetWindowRect(hwnd, &r1);
+	return r1.right;
+}
 
 int main()
 {
-	 std::ifstream updatedForeground;
 	
 	 INPUT leftctrl;
 	 INPUT leftshft;
@@ -30,111 +74,110 @@ int main()
 	 bkey.ki.time = 0;
 	 bkey.ki.dwExtraInfo = 0;
 	 
-	 static string STRING;
 	 static POINT point;
 	
 	do
 	{
-		
-		 updatedForeground.open("updatedForeground.txt");
-		 
-		 getline(updatedForeground, STRING);
-		 std::cout << STRING;
-		 std::cout << "\n";
 
-		if(STRING.find("Google Chrome") != std::string::npos)
+		if(GetActiveWindowTitle().find("Google Chrome") != std::string::npos)
 		{
-			while(STRING.find("Google Chrome") != std::string::npos)
+
+			do
 			{	
-				do
-				{	
-					 GetCursorPos(&point);
-					 Sleep(16);
-					if(point.y < 62)
-					{
-						
-					 leftctrl.ki.wVk = VK_CONTROL;
-					 leftctrl.ki.dwFlags = 0;
-					 
-					 
-					 leftshft.ki.wVk = VK_SHIFT;
-					 leftshft.ki.dwFlags = 0;
-					 			 
-
-					 bkey.ki.wVk = 0x42;
-					 bkey.ki.dwFlags = 0;
-					 
-					 SendInput(1, &leftctrl, sizeof(INPUT));
-					 SendInput(1, &leftshft, sizeof(INPUT));
-					 SendInput(1, &bkey, sizeof(INPUT));
-					 
-					 
-					 Sleep(16);
-					 
-					 leftctrl.ki.dwFlags = KEYEVENTF_KEYUP;
-					 leftshft.ki.dwFlags = KEYEVENTF_KEYUP;
-					 bkey.ki.dwFlags = KEYEVENTF_KEYUP;
-					 
-					 SendInput(1, &leftctrl, sizeof(INPUT));
-					 SendInput(1, &leftshft, sizeof(INPUT));					 
-					 SendInput(1, &bkey, sizeof(INPUT));	
-					 
-					 break;
-					}
+				 GetCursorPos(&point);
+				 Sleep(16);
+				if(
+					((point.y - 11) < (GetYPos() + 62))&&
+					(point.x>GetLeftPos())&&
+					(point.x<GetRightPos())
+											)
+				{
 					
-				 Sleep(16);
+				 leftctrl.ki.wVk = VK_CONTROL;
+				 leftctrl.ki.dwFlags = 0;
 				 
-				}while(1<2);
 				 
-				 Sleep(16);
-				 
-				do
-				{		
-					 GetCursorPos(&point);
-					if(point.y > 88)
-					{
-						
-					 leftctrl.ki.wVk = VK_CONTROL;
-					 leftctrl.ki.dwFlags = 0;
-					 
-					 
-					 leftshft.ki.wVk = VK_SHIFT;
-					 leftshft.ki.dwFlags = 0;
-					 
-
-					 bkey.ki.wVk = 0x42;
-					 bkey.ki.dwFlags = 0;
-					 
-					 SendInput(1, &leftctrl, sizeof(INPUT));
-					 SendInput(1, &leftshft, sizeof(INPUT));
-					 SendInput(1, &bkey, sizeof(INPUT));
-					 
-					 Sleep(16);
-					 
-					 leftctrl.ki.dwFlags = KEYEVENTF_KEYUP;
-					 leftshft.ki.dwFlags = KEYEVENTF_KEYUP;
-					 bkey.ki.dwFlags = KEYEVENTF_KEYUP;
-					 
-					 SendInput(1, &bkey, sizeof(INPUT));	
-					 SendInput(1, &leftctrl, sizeof(INPUT));
-					 SendInput(1, &leftshft, sizeof(INPUT));
-					 
-					 
-					 break;
-					}
-
-				 Sleep(16);
-				 
-				}while(1<2);
+				 leftshft.ki.wVk = VK_SHIFT;
+				 leftshft.ki.dwFlags = 0;
 				
-			 Sleep(32);
+
+				 bkey.ki.wVk = 0x42;
+				 bkey.ki.dwFlags = 0;
+				 
+				 SendInput(1, &leftctrl, sizeof(INPUT));
+				 SendInput(1, &leftshft, sizeof(INPUT));
+				 SendInput(1, &bkey, sizeof(INPUT));
+				 
+				 
+				 Sleep(16);
+				 
+				 leftctrl.ki.dwFlags = KEYEVENTF_KEYUP;
+				 leftshft.ki.dwFlags = KEYEVENTF_KEYUP;
+				 bkey.ki.dwFlags = KEYEVENTF_KEYUP;
+				 
+				 SendInput(1, &leftctrl, sizeof(INPUT));
+				 SendInput(1, &leftshft, sizeof(INPUT));					 
+				 SendInput(1, &bkey, sizeof(INPUT));	
+				 
+
+				 break;
+				}
 				
-			}//while(STRING.find("Google Chrome") != std::string::npos);
+			 Sleep(16);
+			 
+			}while(GetActiveWindowTitle().find("Google Chrome") != std::string::npos);
+			 
+			 Sleep(16);
+			 
+			do
+			{		
+				 GetCursorPos(&point);
+				if(
+					(((point.y -10)> (GetYPos() + 88))&&
+					(point.x>GetLeftPos())&&
+					(point.x<GetRightPos()))
+												)
+				{
+					
+				 leftctrl.ki.wVk = VK_CONTROL;
+				 leftctrl.ki.dwFlags = 0;
+				 
+				 
+				 leftshft.ki.wVk = VK_SHIFT;
+				 leftshft.ki.dwFlags = 0;
+				 
+
+				 bkey.ki.wVk = 0x42;
+				 bkey.ki.dwFlags = 0;
+				 
+				 SendInput(1, &leftctrl, sizeof(INPUT));
+				 SendInput(1, &leftshft, sizeof(INPUT));
+				 SendInput(1, &bkey, sizeof(INPUT));
+				 
+				 Sleep(16);
+				 
+				 leftctrl.ki.dwFlags = KEYEVENTF_KEYUP;
+				 leftshft.ki.dwFlags = KEYEVENTF_KEYUP;
+				 bkey.ki.dwFlags = KEYEVENTF_KEYUP;
+				 
+				 SendInput(1, &bkey, sizeof(INPUT));	
+				 SendInput(1, &leftctrl, sizeof(INPUT));
+				 SendInput(1, &leftshft, sizeof(INPUT));
+				 
+				 
+				 break;
+				}
+
+			 Sleep(16);
+			 
+			}while(GetActiveWindowTitle().find("Google Chrome") != std::string::npos);
+			
+		 Sleep(32);
 		}
 		
 		Sleep(16);
 		
-		updatedForeground.close();
+		//updatedForeground.close();
 		
 
 	}while(1<2);
