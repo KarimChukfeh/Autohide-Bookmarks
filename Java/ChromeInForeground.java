@@ -8,8 +8,6 @@ class ChromeInForeground{
 	public static String myTask; 
 	public MacroReady ready;
 
-	
-
 	public ChromeInForeground(){
 		
 		do{
