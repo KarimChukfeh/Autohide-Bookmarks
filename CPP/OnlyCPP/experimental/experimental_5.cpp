@@ -9,7 +9,20 @@
 
 using namespace std;
 
-int Unpause(){
+bool PixelIsYellow(){
+	HDC hdc_ = GetDC(GetDesktopWindow());
+	string color;
+	COLORREF pColor = GetPixel(hdc_, 84, 71);
+	//color = printf("%d %d %d\n", GetRValue(pColor), GetGValue(pColor), GetBValue(pColor));
+	return ((GetRValue(pColor) == 255)
+			&&
+			(GetGValue(pColor) == 216)
+			&&
+			(GetBValue(pColor) == 144));
+}
+
+
+bool Unpause(){
 	
 	
 		while(true){
@@ -21,33 +34,32 @@ int Unpause(){
 				if((GetKeyState(VK_LBUTTON) & 0x100) != 0){
 					std::cout << "if 2\n";
 					//Sleep(1000);
-					return 2;
+					return PixelIsYellow();
 				}
 				return 1;
 			}return 0;
 	}	
 }
 
-int Pause()
+bool Pause()
 {
 
 	static POINT point;
 	GetCursorPos(&point);
 	
 	int x;
-	
 	if((GetKeyState(VK_LBUTTON) & 0x100) != 0){
 		std::cout << "CLICK\n";
 		Sleep(16);
 			if((GetKeyState(VK_LBUTTON) & 0x100) != 0){
 			return Unpause();
 		}
-			
 	}
 	std::cout << "out\n";
 	return 0;
 
 }
+
 
 string GetActiveWindowTitle()
 {
@@ -231,40 +243,45 @@ int main()
 					(point.y > 78)&&
 					(point.y < 95)
 					){
-						//std::cout << point.x << ", " << point.y << "\n";
-						if(Pause()==2){
-							 std::cout << "x == 2\n";
-							 Sleep(16);
-							 leftctrl.ki.wVk = VK_CONTROL;
-							 leftctrl.ki.dwFlags = 0;
-							 
-							 
-							 leftshft.ki.wVk = VK_SHIFT;
-							 leftshft.ki.dwFlags = 0;
-							 
+						do{
+							//std::cout << point.x << ", " << point.y << "\n";
+							if(Pause()==1){
+								 std::cout << "x == 1\n";
+								 Sleep(200);
+								 leftctrl.ki.wVk = VK_CONTROL;
+								 leftctrl.ki.dwFlags = 0;
+								 
+								 
+								 leftshft.ki.wVk = VK_SHIFT;
+								 leftshft.ki.dwFlags = 0;
+								 
 
-							 bkey.ki.wVk = 0x42;
-							 bkey.ki.dwFlags = 0;
-							 
-							 SendInput(1, &leftctrl, sizeof(INPUT));
-							 SendInput(1, &leftshft, sizeof(INPUT));
-							 SendInput(1, &bkey, sizeof(INPUT));
-							 
-							 Sleep(16);
-							 
-							 leftctrl.ki.dwFlags = KEYEVENTF_KEYUP;
-							 leftshft.ki.dwFlags = KEYEVENTF_KEYUP;
-							 bkey.ki.dwFlags = KEYEVENTF_KEYUP;
-							 
-							 SendInput(1, &bkey, sizeof(INPUT));	
-							 SendInput(1, &leftctrl, sizeof(INPUT));
-							 SendInput(1, &leftshft, sizeof(INPUT));
-							break;
-						}else if(Pause()==1){
-							std::cout << "x == 1\n";
-						}else if(Pause()==0){
-							std::cout << "x == 0\n";
-						}
+								 bkey.ki.wVk = 0x42;
+								 bkey.ki.dwFlags = 0;
+								 
+								 SendInput(1, &leftctrl, sizeof(INPUT));
+								 SendInput(1, &leftshft, sizeof(INPUT));
+								 SendInput(1, &bkey, sizeof(INPUT));
+								 
+								 Sleep(16);
+								 
+								 leftctrl.ki.dwFlags = KEYEVENTF_KEYUP;
+								 leftshft.ki.dwFlags = KEYEVENTF_KEYUP;
+								 bkey.ki.dwFlags = KEYEVENTF_KEYUP;
+								 
+								 SendInput(1, &bkey, sizeof(INPUT));	
+								 SendInput(1, &leftctrl, sizeof(INPUT));
+								 SendInput(1, &leftshft, sizeof(INPUT)); 
+								break;
+							}else if(Pause()==0){
+								std::cout << "x == 0\n";
+							}
+						}while(
+								(point.x > 1787)&&
+								(point.x < 1907)&&
+								(point.y > 78)&&
+								(point.y < 95)
+							);
 					} 
 
 			 Sleep(16);
@@ -278,7 +295,8 @@ int main()
 		}
 		
 		Sleep(16);
-		
+		//std::cout << ("%d",PixelIsYellow());
+		//std::cout << "\n";
 
 	}while(1<2);
 	
