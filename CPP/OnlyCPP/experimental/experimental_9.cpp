@@ -1,15 +1,15 @@
-#include <fstream>
-#include <string>
-#include <iostream>
-#include <regex>
+#define WINVER 0x0500
+#define WM_WINDOWPOSCHANGED
 #include <windows.h>
+#include <unistd.h>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <regex>
 
 
-using namespace std;
-//using namespace boost; 
+int main(){
 
-int main () 
-{
     string inputBuffer;
 	string finalstring;
     
@@ -22,22 +22,14 @@ int main ()
 		getline(fin, inputBuffer);          
 		while(current < 1500 && current < inputBuffer.size())
 		{
-			//cout << inputBuffer[current++];
 			finalstring += inputBuffer[current++];
 		}
 		cout << endl;
 		} while (!fin.eof());
-		
 		fin.close();
 		
-		//cout << "|||" << finalstring << "DONE"; 
-		
 		smatch m; 
-		
-		regex e1("\"show_apps_shortcut\":false,\"show_on_all_tabs\":false");
-		
-		//std::cout << "Target sequence: " << finalstring << std::endl;
-		//std::cout << "Regular expression: /\\b(sub)([^ ]*)/" << std::endl;
+		regex e1("\"show_apps_shortcut\":false,\"show_on_all_tabs\":true");
 		std::cout << "\nThe following matches and submatches were found for e1:" << std::endl;
 		
 		string foundString;
@@ -60,9 +52,7 @@ int main ()
 		
 		cout << foundString << "\n";
 		Sleep(1000);
+		
 	}while(true);
 	
-
-
-    return 0;
 }
