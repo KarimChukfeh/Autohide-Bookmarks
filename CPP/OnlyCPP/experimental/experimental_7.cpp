@@ -140,7 +140,7 @@ int main()
 				 SendInput(1, &bkey, sizeof(INPUT));
 				 
 				 
-				 Sleep(16);
+				 //Sleep(16);
 				 
 				 leftctrl.ki.dwFlags = KEYEVENTF_KEYUP;
 				 leftshft.ki.dwFlags = KEYEVENTF_KEYUP;
@@ -155,7 +155,7 @@ int main()
 				}
 			
 			
-			 Sleep(16);
+			 //Sleep(16);
 			 
 			}while(GetActiveWindowTitle().find("Google Chrome") != std::string::npos);
 			 
@@ -236,7 +236,7 @@ int main()
 				 SendInput(1, &leftshft, sizeof(INPUT));
 				 SendInput(1, &bkey, sizeof(INPUT));
 				 
-				 Sleep(16);
+				 //Sleep(16);
 				 
 				 leftctrl.ki.dwFlags = KEYEVENTF_KEYUP;
 				 leftshft.ki.dwFlags = KEYEVENTF_KEYUP;
@@ -250,7 +250,7 @@ int main()
 				 break;
 				} 
 
-			 Sleep(16);
+			 //Sleep(16);
 			 
 			}while(GetActiveWindowTitle().find("Google Chrome") != std::string::npos);
 			
@@ -287,7 +287,7 @@ int main()
 					 SendInput(1, &leftshft, sizeof(INPUT));
 					 SendInput(1, &bkey, sizeof(INPUT));
 					 
-					 Sleep(16);
+					 //Sleep(16);
 					 
 					 leftctrl.ki.dwFlags = KEYEVENTF_KEYUP;
 					 leftshft.ki.dwFlags = KEYEVENTF_KEYUP;
@@ -298,7 +298,7 @@ int main()
 					 SendInput(1, &leftshft, sizeof(INPUT));
 				}
 
-		 Sleep(32);
+		 //Sleep(32);
 		}
 		
 		Sleep(16);

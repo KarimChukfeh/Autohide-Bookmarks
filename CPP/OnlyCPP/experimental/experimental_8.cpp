@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <regex>
 
 
 using namespace std;
@@ -75,6 +76,56 @@ bool PixelIsYellow(){
 			(GetBValue(pColor) == 144));
 }
 
+bool TrueInPreferences(){
+	
+	string settingsString = "\"show_apps_shortcut\":false,\"show_on_all_tabs\":true";
+	
+	string inputBuffer;
+	string finalstring;
+    
+	ifstream fin;
+    fin.open ("Preferences");
+	
+    do {
+		int current(0);
+		getline(fin, inputBuffer);          
+		while(current < 1500 && current < inputBuffer.size())
+		{
+			//cout << inputBuffer[current++];
+			finalstring += inputBuffer[current++];
+		}
+		cout << endl;
+    } while (!fin.eof());
+	
+    fin.close();
+	
+	cout << "|||" << finalstring << "DONE"; 
+	
+	smatch m; 
+	
+	regex e1("\"show_apps_shortcut\":false,\"show_on_all_tabs\":true");
+	
+	//std::cout << "Target sequence: " << finalstring << std::endl;
+	//std::cout << "Regular expression: /\\b(sub)([^ ]*)/" << std::endl;
+	std::cout << "\n\n\nThe following matches and submatches were found for e1:" << std::endl;
+
+	try{
+		while (std::regex_search (finalstring,m,e1)) {
+			for (auto x:m) std::cout << x << " ";
+			//std::cout << std::endl;
+			finalstring = m.suffix().str();
+		}
+	}catch (const std::regex_error& e1) {
+		std::cout << "regex_error caught: " << e1.what() << '\n';
+        if (e1.code() == std::regex_constants::error_brack) {
+            std::cout << "The code was error_brack\n";
+        }
+	}
+	
+	return (finalstring==settingsString);
+}
+
+
 int main()
 {
 	
@@ -140,7 +191,7 @@ int main()
 				 SendInput(1, &bkey, sizeof(INPUT));
 				 
 				 
-				 Sleep(16);
+				 //Sleep(16);
 				 
 				 leftctrl.ki.dwFlags = KEYEVENTF_KEYUP;
 				 leftshft.ki.dwFlags = KEYEVENTF_KEYUP;
@@ -155,7 +206,7 @@ int main()
 				}
 			
 			
-			 Sleep(16);
+			 //Sleep(16);
 			 
 			}while(GetActiveWindowTitle().find("Google Chrome") != std::string::npos);
 			 
@@ -173,7 +224,7 @@ int main()
 				(((point.y-10) < (GetYPos()+75))&&
 				(point.x>GetLeftPos())&&
 				(point.x>(GetRightPos()-38)))
-				)&&PixelIsYellow()
+				)&&TrueInPreferences()
 			 ){
 											 
 					 leftctrl.ki.wVk = VK_CONTROL;
@@ -236,7 +287,7 @@ int main()
 				 SendInput(1, &leftshft, sizeof(INPUT));
 				 SendInput(1, &bkey, sizeof(INPUT));
 				 
-				 Sleep(16);
+				 //Sleep(16);
 				 
 				 leftctrl.ki.dwFlags = KEYEVENTF_KEYUP;
 				 leftshft.ki.dwFlags = KEYEVENTF_KEYUP;
@@ -250,7 +301,7 @@ int main()
 				 break;
 				} 
 
-			 Sleep(16);
+			 //Sleep(16);
 			 
 			}while(GetActiveWindowTitle().find("Google Chrome") != std::string::npos);
 			
@@ -269,7 +320,7 @@ int main()
 				(((point.y-10) < (GetYPos()+75))&&
 				(point.x>GetLeftPos())&&
 				(point.x>(GetRightPos()-38)))
-				)&&PixelIsYellow()
+				)&&TrueInPreferences()
 			 ){
 											 
 					 leftctrl.ki.wVk = VK_CONTROL;
@@ -287,7 +338,7 @@ int main()
 					 SendInput(1, &leftshft, sizeof(INPUT));
 					 SendInput(1, &bkey, sizeof(INPUT));
 					 
-					 Sleep(16);
+					 //Sleep(16);
 					 
 					 leftctrl.ki.dwFlags = KEYEVENTF_KEYUP;
 					 leftshft.ki.dwFlags = KEYEVENTF_KEYUP;
@@ -298,7 +349,7 @@ int main()
 					 SendInput(1, &leftshft, sizeof(INPUT));
 				}
 
-		 Sleep(32);
+		 //Sleep(32);
 		}
 		
 		Sleep(16);
