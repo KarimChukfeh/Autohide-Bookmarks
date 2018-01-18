@@ -1,6 +1,5 @@
-Hides/shows the bookmarks bar for Google Chrome on Windows. 
+Hides/shows the bookmarks bar for Google Chrome on Windows.
 
-- Use the C++ implementation. (version experimental_7 is the most stable) 
+- Use the C++ implementation in the CPP directory
 
 - Beware: the Java implementation is unstable and leaks memory.
-
