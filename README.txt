@@ -1,3 +1,5 @@
-This software auto-hides/shows the bookmarks' bar for Google Chrome on Windows PC.
+Hides/shows the bookmarks bar for Google Chrome on Windows. 
 
-To run this program simply run experiment_7.exe found in the CPP folder
+-The C++ implementation works as expected with no memory issues. (version experimental_7) 
+-PS: the Java implementation leaks memory.
+
